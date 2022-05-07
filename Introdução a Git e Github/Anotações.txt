@@ -1,0 +1,167 @@
+
+Git - Faz o versionamento
+
+Github onde guarda os versionamentos,Gitbucket, gitlab também
+
+
+GUI x CLI
+Graphic user interface, no caso do git é um CLI - command line interface
+
+Para WINDOWS
+- cd = change directory, possibilita navegar pelas pastas
+- dir = Listar todos pastas na pasta que estamos situados
+- mkdir = make directory - criar uma pasta nova
+- del = comando de deletar TODOS AQUIVOS que está dentro de uma pasta, não apagará a pasta, e nem os itens dentro da subpastas, coloque del e o nome da pasta que contém o que quer deletar, ele pedirá se você tem certeza, ai vc confirma ou não
+- rmdir = remove directory - este comando de fato irá apagar A PASTA e tudo que estiver dentro dela
+- cls = clear screen
+- echo = (repete o que foi digitado, normalmente se usa o output deste comando para atribuir a um arquivo com o operado >)
+
+Passo-a-passo:
+- Abrir CMD
+dir - listar as pastas
+digitar cd / - (a barra é o caminho) isso levará para base do diretório c
+digitar o dir, vai listar tudo que está no C.
+digitar cd Windows, isso irá abrir a pasta windows
+AGORA PARA VOLTAR NA PASTA ANTERIOR
+o comando é cd .. (dois pontos)
+comando para limpar o terminal cls
+tecla tab autopreenche
+para criar uma nova pasta: mkdir "nome da pasta", a pasta será criada na pasta que estamos situados
+se der tudo certo o terminal não te falará nada, é um conceito comum
+
+criar arquivo no terminal com o comando echo, esse comando usará seu output pra um novo arquivo, então:
+
+echo hello>hello.txt //por exemplo  
+o sistema irá verificar se já existe algum arquivo com esse nome, não havendo ele irá criar
+
+tente deletar com o comando del e verá que só apagará o txt, a pasta se mantém
+agora tente excluir a pasta com rmdir "nome da pasta" /S /Q, que são duas flags
+
+
+
+
+Para Linux (teste para sistemas uix)
+- cd = change directory, possibilita navegar pelas pastas
+- ls - Listar, igual ao dir
+- cd . para voltar
+- clear - limpa tela, ou CTRL + L
+- mkdir = make directory - criar uma pasta nova
+
+Git credential manager core
+
+sha1:
+algoritmos de encriptação, com 40 digitos de tamanho, cada coisa tem seu código
+
+vai com botão direito git bash here e ele ja abre na pasta que quer, lá pode usar o comando 
+
+openssl sha1 texto.txt,
+ali ele vai mostrar como fica o código sha1 deste txt, se mudar uma virgula, vai ser outro codigo, se tirar a virgula, volta pro codigo sem virgula
+
+
+- Blobs - echo 'conteudo' | git hash-object --stdin
+(isso vai dar o sha1 da string)
+
+echo -e 'conteudo' | openssl sha1
+
+git guarda em arquivos chamados blobs, que além do conteudo ele coloca dentro esses metadados 'blob 9\0' - guarda somente o codigo sha1 do conteudo
+
+
+- Trees - armazena os blobs, também possuí metadados, ele guarda os blobs com seus conteudos, mas também o nome dos arquivos, ou também aponta para outras árvores. e tem o sha1, dos metadados da árvore, ou seja se mudar o arquivo do blob o sha1 da arvore também muda
+
+
+Commits - ele junta tudo, aponta pra uma árvore, aponta para o ultimo commit antes dele, aponta para o autor e aponta para uma mensagem.
+Você monta uma linha do tempo de commits, garantindo que não houve alteração
+
+
+
+- PRIMEIROS COMANDOS COM GIT
+
+- git init - iniciar repositório git
+
+- git add - adicionar arquivos
+
+- git commit - criar commit
+
+na pasta workspace do c usa mkdir livro-receitas
+
+e faz o git init
+
+se eu der um ls e por ls -a ele lista todos arquivos, inclusive ocultos
+
+cria seu autor e seu email com
+git config --global user.email
+git config --global user.name 
+
+la na nossa pasta vamos escrever um arquivo markdown, que é um arquivo parecido com html
+
+a extensão do arquivo markdown é .md
+
+pra adicionar
+
+git add *
+e depois:
+
+git commit -m "commit inicial"
+
+- ciclo de vidas do git
+quando criamos um git init dentro de um diretório, cria-se um repositório
+
+git add leva do untracked para staged
+
+unmodified para modified quando mudou algo, se der git add ele manda do modified para staged
+
+se remove o arquivo vai de unmodified para untracked
+
+o staged é onde o arquivo fica preparado para um commit
+
+e após o commit ele cria um snapshot e manda para o unmodified para aguardar novas alterações
+
+temos o servidor remoto
+
+e o ambiente de desenvolvimento
+aqui temos o repositório local, ao fazer um commit, eu passo para o repositório local, este repositório no futuro pode ser passado para o remote repository
+
+comando git status ele da o status do que tem la
+vamos criar uma pasta de receitas
+para mover o arquivo para a pasta:
+- mv "nome do arquivo"./receitas
+
+vamos criar um arquivo comm
+echo > README.md
+
+como empurrar o que ta no nosso git local, para o github
+
+git config --list para listar configs 
+
+criar meu novo repositório no github
+
+para adicionar um repositorio local para o remoto usa a sugestão do push ou seja
+
+criar a origem, o caminho:
+git remote add origin "link que o github sugere"
+
+git remote -v vai listar as listas de remote repositorio que tenho
+
+para enviar os arquivos para o repositório online use 
+git push origin master
+
+o arquivo readme é tipo nossa capa, o que aparece primeiro na pasta e normalmente é escrito em .md
+
+- Resolver conflitos
+
+confilto de merge - o git tenta juntar as alterações mas existem duas alterações na mesma linha, ai fica por tu resolver manualmente, ele não fara isso
+
+agora vamos puxar o que tá no git para nossa máquina com o comando
+
+git pull origin master
+
+para resolver conflitos de merge:
+o git indica qual é a alteração mais recente feita por você na sua máquina com o <<<<< HEAD e depois ====== e começa as alterações da outra pasta que estava la no github, você ajeita manualmente o que tem de discordância e cola de volta no arquivo original, ai salva, no git status, tem both modified, ai vai vai fazer um git add e git commit dnv, e depois o git push dnv
+
+como baixar um repositório no github:
+
+no repositorio que quer no github vai em code: copia o link que fala (olha a questão do ssh ou https), para clonar o repositorio que ta lá
+
+git clone "link que copiou"
+
+ele vai criar o repositorio que tava remoto pro seu repositorio
